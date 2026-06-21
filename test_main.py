@@ -4,6 +4,7 @@ from main import app, tasks  # main.py se app aur tasks list import ki
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def run_before_and_after_tests():
     tasks.clear()

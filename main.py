@@ -11,32 +11,29 @@ class Task(BaseModel):
     is_done: bool = False
 
 
-@app.get('/')
+@app.get("/")
 def home():
     return {
         "message": "Task Manager API is running!",
         "endpoints": {
             "/health": "Check API status",
             "/tasks": "GET all tasks, POST create task",
-            "/tasks/{id}": "GET specific task"
-        }
+            "/tasks/{id}": "GET specific task",
+        },
     }
 
 
-@app.get('/health')
+@app.get("/health")
 def health_check():
     return {"status": "OK"}
 
 
-@app.get('/tasks')
+@app.get("/tasks")
 def get_all_tasks():
-    return {
-        "total": len(tasks),
-        "tasks": tasks
-    }
+    return {"total": len(tasks), "tasks": tasks}
 
 
-@app.get('/tasks/{task_id}')
+@app.get("/tasks/{task_id}")
 def get_single_task(task_id: int):
     if task_id < 0 or task_id >= len(tasks):
         raise HTTPException(status_code=404, detail="Task not found")
@@ -48,11 +45,11 @@ def get_single_task(task_id: int):
         "id": task_id,
         "name": task["name"],
         "is_done": task["is_done"],
-        "status": status
+        "status": status,
     }
 
 
-@app.post('/tasks', status_code=201)
+@app.post("/tasks", status_code=201)
 def create_task(task: Task):
     if not task.name.strip():
         raise HTTPException(status_code=400, detail="Task name cannot be empty")
@@ -63,10 +60,11 @@ def create_task(task: Task):
     return {
         "message": "Task created successfully",
         "task": task_dict,
-        "total_tasks": len(tasks)
+        "total_tasks": len(tasks),
     }
 
-@app.delete('/tasks/{task_id}')
+
+@app.delete("/tasks/{task_id}")
 def delete_task(task_id: int):
     if task_id < 0 or task_id >= len(tasks):
         raise HTTPException(status_code=404, detail="Task not found")
@@ -75,16 +73,14 @@ def delete_task(task_id: int):
     return {
         "message": "Task deleted",
         "deleted_task": deleted_task,
-        "remaining_tasks": len(tasks)
+        "remaining_tasks": len(tasks),
     }
 
-@app.put('/tasks/{task_id}')
+
+@app.put("/tasks/{task_id}")
 def update_task(task_id: int, task: Task):
     if task_id < 0 or task_id >= len(tasks):
         raise HTTPException(status_code=404, detail="Task not found")
 
     tasks[task_id] = task.dict()
-    return {
-        "message": "Task updated",
-        "task": tasks[task_id]
-    }
+    return {"message": "Task updated", "task": tasks[task_id]}
