@@ -67,7 +67,7 @@ def test_update_task_success():
     updated_payload = {"name": "Updated Task", "is_done": True}
     response = client.put("/tasks/0", json=updated_payload)
 
-    # assert response.status_code == 200
+    assert response.status_code == 200
     assert response.json()["message"] == "Task updated"
     assert response.json()["task"]["is_done"] is True
 
