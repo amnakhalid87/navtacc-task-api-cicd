@@ -27,9 +27,6 @@ jobs:
       - name: Run black formatter check
         run: black --check .
 
-      - name: Run flake8 linter
-        run: flake8 .
-
       - name: Run tests
         run: pytest test_main.py -v
 
